@@ -1,0 +1,75 @@
+services:
+  order-service:
+    build:
+      context: /order-service-go
+    container_name: order-service
+    env_file:
+      - .env
+    networks:
+      - devops-network
+    ports:
+      - "3000:3000"
+    command:
+      [
+        "./wait-for-it.sh",
+        "mysql:3306",
+        "--",
+        "./wait-for-it.sh",
+        "rabbitmq:5672",
+        "--timeout=60",
+        "--",
+        "./api",
+      ]
+
+  invoice-service:
+    build:
+      context: /invoice-service-js
+    container_name: invoice-service
+    env_file:
+      - .env
+    networks:
+      - devops-network
+    ports:
+      - "3001:3001"
+    command:
+      [
+        "./wait-for-it.sh",
+        "mysql:3306",
+        "--",
+        "./wait-for-it.sh",
+        "rabbitmq:5672",
+        "--timeout=60",
+        "--",
+        "node",
+        "index.js",
+      ]
+
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    container_name: rabbitmq
+    networks:
+      - devops-network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: devops
+    networks:
+      - devops-network
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+    external: true
+
+networks:
+  devops-network:
+    external: true
