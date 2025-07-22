@@ -1,4 +1,21 @@
 module "s3" {
-  source = "./modules/s3"
+  source         = "./modules/s3"
   s3_bucket_name = "devops-api-iac"
+  tags = {
+    Iac = true
+  }
+}
+
+module "cdn" {
+  source             = "./modules/cloudfront"
+  origin_id          = module.s3.bucket_id
+  bucket_domain_name = module.s3.bucket_domain_name
+  price_class        = "PriceClass_200"
+  tags = {
+    Iac = true
+  }
+
+  depends_on = [
+    module.s3
+  ]
 }
