@@ -1,2 +1,20 @@
 node_modules
 .env
+
+# Arquivos sensíveis e de estado
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+crash.log
+override.tf
+override.tf.json
+terraform.tfvars
+.terraform.lock.hcl
+
+# Diretórios locais do Terraform
+.terraform/
+
+# Arquivos de plano
+plan.out
+*.plan
