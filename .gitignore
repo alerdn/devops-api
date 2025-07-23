@@ -3,17 +3,11 @@ node_modules
 
 # Arquivos sensíveis e de estado
 *.tfstate
-*.tfstate.backup
+*.tfstate.*
 *.tfvars
-*.tfvars.json
-crash.log
-override.tf
-override.tf.json
-terraform.tfvars
-.terraform.lock.hcl
 
 # Diretórios locais do Terraform
-.terraform/
+.terraform
 
 # Arquivos de plano
 plan.out

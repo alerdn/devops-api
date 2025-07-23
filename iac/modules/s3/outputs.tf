@@ -13,7 +13,7 @@ output "bucket_domain_name" {
 }
 
 output "bucket_website_domain_name" {
-    value = "${data.aws_s3_bucket.bucket.bucket}.s3-website-${data.aws_s3_bucket.bucket.region}.amazonaws.com"
-    sensitive = false
-    description = "Nome do domínio do site do bucket S3"
+  value       = "${data.aws_s3_bucket.bucket.bucket}.s3-website-${data.aws_s3_bucket.bucket.region}.amazonaws.com"
+  sensitive   = false
+  description = "Nome do domínio do site do bucket S3"
 }

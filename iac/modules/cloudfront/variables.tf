@@ -10,12 +10,12 @@ variable "bucket_domain_name" {
 
 variable "price_class" {
   type        = string
-  description = "Classe de preço do CloudFront (ex: PriceClass_100, PriceClass_200, PriceClass_All)"
   default     = "PriceClass_200"
+  description = "Classe de preço do CloudFront (ex: PriceClass_100, PriceClass_200, PriceClass_All)"
 }
 
 variable "tags" {
   type        = map(string)
+  default     = {}
   description = "Tags a serem aplicadas ao recurso CloudFront"
-  default     = {}  
 }

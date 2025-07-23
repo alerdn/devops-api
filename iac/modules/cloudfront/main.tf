@@ -23,14 +23,14 @@ resource "aws_cloudfront_distribution" "cdn" {
       }
     }
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl = 0
-    default_ttl = 0
-    max_ttl = 0
+    min_ttl                = 0
+    default_ttl            = 0
+    max_ttl                = 0
   }
 
   restrictions {
     geo_restriction {
-        restriction_type = "none"
+      restriction_type = "none"
     }
   }
 
