@@ -11,7 +11,7 @@ module "s3" {
 module "cdn" {
   source             = "./modules/cloudfront"
   origin_id          = module.s3.bucket_id
-  bucket_domain_name = module.s3.bucket_domain_name
+  bucket_domain_name = module.s3.bucket_website_domain_name
   price_class        = "PriceClass_200"
 
   tags = {
