@@ -19,6 +19,12 @@ jobs:
           node-version: 20.19.1
         # O comando CD e o NPM devem ser inline senão não funciona
       - run: cd invoice-service-js && npm install
-    
+
+      - name: Generate tag
+        id: generate_tag
+        run: |
+          SHA=$(echo $GITHUB_SHA | head -c 7)
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+
       - name: Build docker image
-        run: cd invoice-service-js && docker build -t xanderdn/invoice-service-js:latest .
+        run: cd invoice-service-js && docker build -t xanderdn/invoice-service-js:${{ steps.generate_tag.outputs.sha }} .
