@@ -19,3 +19,6 @@ jobs:
           node-version: 20.19.1
         # O comando CD e o NPM devem ser inline senão não funciona
       - run: cd invoice-service-js && npm install
+    
+      - name: Build docker image
+        run: cd invoice-service-js && docker build -t xanderdn/invoice-service-js:latest .
