@@ -22,6 +22,8 @@ jobs:
 
       - name: Generate tag
         id: generate_tag
+        # Boa prática usar os 7 primeiro caracteres do SHA do commit como tag da imagem
+        # Também é boa prática jogar a variável de ambiente para o output do step
         run: |
           SHA=$(echo $GITHUB_SHA | head -c 7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
