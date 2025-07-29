@@ -37,6 +37,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
+          context: ./invoice-service-js/.
           push: true
           # Pushing duas tags por boa prática, a tag do commit e latest
           tags: xanderdn/invoice-service-js:${{ steps.generate_tag.outputs.sha }},xanderdn/invoice-service-js:latest
