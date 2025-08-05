@@ -17,8 +17,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.19.1
-        # O comando CD e o NPM devem ser inline senão não funciona
-      - run: cd invoice-service-js && npm install
+      - run: |
+          cd invoice-service-js 
+          npm install
 
       - name: Generate tag
         id: generate_tag
@@ -41,9 +42,3 @@ jobs:
           push: true
           # Pushing duas tags por boa prática, a tag do commit e latest
           tags: xanderdn/invoice-service-js:${{ steps.generate_tag.outputs.sha }},xanderdn/invoice-service-js:latest
-
-      # - name: Build docker image
-      #   run: cd invoice-service-js && docker build -t xanderdn/invoice-service-js:${{ steps.generate_tag.outputs.sha }} .
-
-      # - name: Push docker image
-      #   run: docker push xanderdn/invoice-service-js:${{ steps.generate_tag.outputs.sha }}
