@@ -18,6 +18,11 @@ variable "ecr_role_policy" {
   description = "Política de função para o ECR"
 }
 
+variable "app_runner_role_assume_policy" {
+  type        = string
+  description = "Política de assunção de função para o App Runner"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags para os recursos"

@@ -61,6 +61,19 @@ module "iam" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
+        Effect   = "Allow",
+        Action   = "apprunner:*",
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:PassRole",
+          "iam:CreateServiceLinkedRole",
+        ],
+        Resource = "*"
+      },
+      {
         "Effect" : "Allow",
         "Action" : [
           "ecr:GetAuthorizationToken",
@@ -81,6 +94,19 @@ module "iam" {
           "ecr:PutImage"
         ],
         "Resource" : "*"
+      }
+    ]
+  })
+
+  app_runner_role_assume_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "build.apprunner.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
       }
     ]
   })

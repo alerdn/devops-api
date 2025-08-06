@@ -44,12 +44,27 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build docker image
+        id: build-docker-image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
           docker build -t $REGISTRY/invoice-service-js:$TAG ./invoice-service-js/.
           docker push $REGISTRY/invoice-service-js:$TAG
+          IMAGE=$(echo $REGISTRY/invoice-service-js:$TAG)
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Deploy to App Runner
+        uses: awslabs/amazon-app-runner-deploy@main
+        with:
+          service: devops-api
+          image: ${{ steps.build-docker-image.outputs.image }}
+          access-role-arn: ${{ secrets.AWS_APP_RUNNER_ROLE_ARN }}
+          region: us-east-1
+          cpu: 1
+          memory: 1
+          port: 3001
+
 
       #? Fluxo para subir no Docker Hub
       #
