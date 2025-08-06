@@ -62,7 +62,7 @@ jobs:
           access-role-arn: ${{ secrets.AWS_APP_RUNNER_ROLE_ARN }}
           region: us-east-1
           cpu: 1
-          memory: 1
+          memory: 2
           port: 3001
 
 
