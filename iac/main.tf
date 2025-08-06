@@ -23,3 +23,83 @@ module "cdn" {
     module.s3
   ]
 }
+
+module "iam" {
+  source = "./modules/iam"
+
+  oidc_url = "https://token.actions.githubusercontent.com"
+  oidc_client_id_list = [
+    "sts.amazonaws.com"
+  ]
+
+  ecr_role_assume_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Principal" : {
+          "Federated" : "arn:aws:iam::286885992381:oidc-provider/token.actions.githubusercontent.com"
+        },
+        "Condition" : {
+          "StringEquals" : {
+            "token.actions.githubusercontent.com:aud" : [
+              "sts.amazonaws.com"
+            ]
+          },
+          "StringLike" : {
+            "token.actions.githubusercontent.com:sub" : [
+              "repo:alerdn/devops-api:ref:refs/heads/master"
+            ]
+          }
+        }
+      }
+    ]
+  })
+
+  ecr_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:DescribeImages",
+          "ecr:BatchGetImage",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:ListTagsForResource",
+          "ecr:DescribeImageScanFindings",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+
+  tags = {
+    Iac     = true
+    Context = terraform.workspace
+  }
+}
+
+module "ecr-repository" {
+  source = "./modules/ecr"
+
+  ecr_repository_name                   = "devops"
+  ecr_repository_image_tag_mutability   = "MUTABLE"
+  ecr_repository_image_scanning_on_push = true
+
+  tags = {
+    Iac     = true
+    Context = terraform.workspace
+  }
+}
