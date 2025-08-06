@@ -129,3 +129,16 @@ module "ecr-repository" {
     Context = terraform.workspace
   }
 }
+
+module "ecr-repository-order" {
+  source = "./modules/ecr"
+
+  ecr_repository_name                   = "order-service-go"
+  ecr_repository_image_tag_mutability   = "MUTABLE"
+  ecr_repository_image_scanning_on_push = true
+
+  tags = {
+    Iac     = true
+    Context = terraform.workspace
+  }
+}
