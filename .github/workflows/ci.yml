@@ -43,6 +43,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Build docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          TAG: ${{ steps.generate_tag.outputs.sha }}
+        run: |
+          docker build -t $REGISTRY/invoice-service-js:$TAG ./invoice-service-js/.
+          docker push $REGISTRY/invoice-service-js:$TAG
+
       #? Fluxo para subir no Docker Hub
       #
       # - name: Login into container registry

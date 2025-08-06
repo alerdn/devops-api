@@ -94,7 +94,7 @@ module "iam" {
 module "ecr-repository" {
   source = "./modules/ecr"
 
-  ecr_repository_name                   = "devops"
+  ecr_repository_name                   = "invoice-service-js"
   ecr_repository_image_tag_mutability   = "MUTABLE"
   ecr_repository_image_scanning_on_push = true
 
