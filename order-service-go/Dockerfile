@@ -17,6 +17,6 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache bash
 
 COPY --from=builder /usr/src/app/api .
-COPY --from=builder /usr/src/app/wait-for-it.sh .
+# COPY --from=builder /usr/src/app/wait-for-it.sh .
 
-RUN chmod +x wait-for-it.sh
+CMD [ "./api" ]
