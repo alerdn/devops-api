@@ -55,10 +55,10 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
-          docker build -t $REGISTRY/order-service-go:$TAG ./order-service-go/.
-          docker push $REGISTRY/order-service-go:$TAG
-          docker tag $REGISTRY/order-service-go:$TAG $REGISTRY/order-service-go:latest
+          docker build -t $REGISTRY/order-service-go:latest ./order-service-go/.
           docker push $REGISTRY/order-service-go:latest
+        # docker tag $REGISTRY/order-service-go:$TAG $REGISTRY/order-service-go:latest
+        # docker push $REGISTRY/order-service-go:latest
         # IMAGE=$(echo $REGISTRY/order-service-go:$TAG)
         # echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
@@ -68,10 +68,10 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ steps.generate_tag.outputs.sha }}
         run: |
-          docker build -t $REGISTRY/invoice-service-js:$TAG ./invoice-service-js/.
-          docker push $REGISTRY/invoice-service-js:$TAG
-          docker tag $REGISTRY/invoice-service-js:$TAG $REGISTRY/invoice-service-js:latest
+          docker build -t $REGISTRY/invoice-service-js:latest ./invoice-service-js/.
           docker push $REGISTRY/invoice-service-js:latest
+        # docker tag $REGISTRY/invoice-service-js:$TAG $REGISTRY/invoice-service-js:latest
+        # docker push $REGISTRY/invoice-service-js:latest
         # IMAGE=$(echo $REGISTRY/invoice-service-js:$TAG)
         # echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
