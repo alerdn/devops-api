@@ -7,14 +7,15 @@ services:
       - .env
     ports:
       - "3000:3000"
-    command: [
-        # "./wait-for-it.sh",
-        # "mysql:3306",
-        # "--",
-        # "./wait-for-it.sh",
-        # "rabbitmq:5672",
-        # "--timeout=60",
-        # "--",
+    command:
+      [
+        "./wait-for-it.sh",
+        "mysql:3306",
+        "--",
+        "./wait-for-it.sh",
+        "rabbitmq:5672",
+        "--timeout=60",
+        "--",
         "./api",
       ]
 
