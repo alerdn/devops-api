@@ -1,9 +1,12 @@
 services:
   order-service:
-    image: 286885992381.dkr.ecr.us-east-1.amazonaws.com/order-service-go:latest
+    build:
+      context: /order-service-go
     container_name: order-service
     env_file:
       - .env
+    networks:
+      - devops-network
     ports:
       - "3000:3000"
     command:
@@ -19,10 +22,13 @@ services:
       ]
 
   invoice-service:
-    image: 286885992381.dkr.ecr.us-east-1.amazonaws.com/invoice-service-js:latest
+    build:
+      context: /invoice-service-js
     container_name: invoice-service
     env_file:
       - .env
+    networks:
+      - devops-network
     ports:
       - "3001:3001"
     command:
@@ -62,3 +68,8 @@ services:
 
 volumes:
   mysql_data:
+    external: true
+
+networks:
+  devops-network:
+    external: true
