@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -21,6 +22,7 @@ func Setup() {
 	database := os.Getenv("DB_NAME")
 
 	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", userDb, password, host, port, database)
+	slog.Info("Conectando ao banco de dados...", "dns", dns)
 	DB, err = gorm.Open(mysql.Open(dns), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
