@@ -3,8 +3,14 @@ services:
     image: 286885992381.dkr.ecr.us-east-1.amazonaws.com/order-service-go:latest
     container_name: order-service
     restart: unless-stopped
+    networks:
+      - db_docker-db
     env_file:
       - .env
     ports:
       - "3000:3000"
     command: ["./api"]
+
+networks:
+  db_docker-db:
+    external: true
