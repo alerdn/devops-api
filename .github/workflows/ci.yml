@@ -62,18 +62,18 @@ jobs:
         # IMAGE=$(echo $REGISTRY/order-service-go:$TAG)
         # echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
-      - name: Build JS image
-        id: build-js-image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          TAG: ${{ steps.generate_tag.outputs.sha }}
-        run: |
-          docker build -t $REGISTRY/invoice-service-js:latest ./invoice-service-js/.
-          docker push $REGISTRY/invoice-service-js:latest
-        # docker tag $REGISTRY/invoice-service-js:$TAG $REGISTRY/invoice-service-js:latest
-        # docker push $REGISTRY/invoice-service-js:latest
-        # IMAGE=$(echo $REGISTRY/invoice-service-js:$TAG)
-        # echo "image=$IMAGE" >> $GITHUB_OUTPUT
+      # - name: Build JS image
+      #   id: build-js-image
+      #   env:
+      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     TAG: ${{ steps.generate_tag.outputs.sha }}
+      #   run: |
+      #     docker build -t $REGISTRY/invoice-service-js:latest ./invoice-service-js/.
+      #     docker push $REGISTRY/invoice-service-js:latest
+      # docker tag $REGISTRY/invoice-service-js:$TAG $REGISTRY/invoice-service-js:latest
+      # docker push $REGISTRY/invoice-service-js:latest
+      # IMAGE=$(echo $REGISTRY/invoice-service-js:$TAG)
+      # echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
       - name: SSH Agent + Exec Script
         env:
@@ -81,11 +81,11 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
         run: |
+          echo "$PRIVATE_KEY" | tr -d '\r' | ssh-add -
           mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $USER@$HOST "~/.scripts/devops-api-cd.sh"
+          chmod 700 ~/.ssh
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no $USER@$HOST "~/.scripts/devops-api-cd.sh"
 
       # - name: Deploy to App Runner
       #   id: deploy-app-runner
